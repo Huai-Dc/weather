@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:weather/utils/screenUtil.dart';
 
+import 'package:weather/views/weatherMain/weatherMain_view.dart';
+
 /**
  * created by Huai 2019/5/8 0008
  */
@@ -45,11 +47,7 @@ class _HomeIndexState extends State<HomeIndex> {
       onWillPop: _requestPop,
       child: new Scaffold(
         backgroundColor: Colors.white,
-        body: new Container(
-          child: Center(
-            child: Text("首页"),
-          ),
-        ),
+        body: new WeatherInfo(),
       ),
     );
   }
