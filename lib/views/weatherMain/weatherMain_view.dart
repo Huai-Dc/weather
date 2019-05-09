@@ -16,7 +16,7 @@ class _WeatherInfoState extends State<WeatherInfo> {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/image/background/day_background.jpg"),
+          image: AssetImage("assets/image/background/night_background.jpg"),
           fit: BoxFit.cover,
         ),
       ),
@@ -24,6 +24,7 @@ class _WeatherInfoState extends State<WeatherInfo> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           title: Text("厦门市"),
+          centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
