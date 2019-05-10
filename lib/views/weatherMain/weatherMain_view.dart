@@ -39,7 +39,7 @@ class _WeatherInfoState extends State<WeatherInfo> {
                 WeatherIcon.iosgengduo_o,
                 color: Colors.white,
               ),
-            )
+            ),
           ],
         ),
         body: Container(
@@ -67,7 +67,10 @@ class _WeatherInfoState extends State<WeatherInfo> {
                       "明天白天有雨请注意",
                       style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
-                    Text("东北风2级")
+                    Text(
+                      "东北风2级",
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    )
                   ],
                 ),
               ),
