@@ -3,8 +3,8 @@
  */
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:weather/models/weather.dart';
 
+@immutable
 abstract class WeatherEvent extends Equatable {
   WeatherEvent([List props = const []]) : super(props);
 }

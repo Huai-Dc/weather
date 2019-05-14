@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:weather/repositories/repositories.dart';
 import 'package:weather/utils/screenUtil.dart';
+import 'package:weather/utils/dioUtil.dart';
+import 'package:weather/repositories/weatherApiClient.dart';
 
 import 'package:weather/views/weatherMain/weatherMain_view.dart';
 
@@ -36,6 +39,12 @@ class _HomeIndexState extends State<HomeIndex> {
     }
   }
 
+  final WeatherRepository weatherRepository = WeatherRepository(
+    weatherApiClient: WeatherApiClient(
+      netUtils: NetUtils(),
+    )
+  );
+
   @override
   void initState() {
     super.initState();
@@ -47,7 +56,7 @@ class _HomeIndexState extends State<HomeIndex> {
       onWillPop: _requestPop,
       child: new Scaffold(
         backgroundColor: Colors.white,
-        body: new WeatherInfo(),
+        body: new Weather(weatherRepository: weatherRepository, ),
       ),
     );
   }

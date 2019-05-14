@@ -2,11 +2,12 @@
  * created by Huai 2019/5/10 0010
  */
 import 'package:meta/meta.dart';
-import 'package:weather/views/weatherMain/fetchData/weatherApiClient.dart';
+import 'package:weather/repositories/weatherApiClient.dart';
 import 'package:weather/models/weather.dart';
 
 class WeatherRepository{
-  final WeatherApiClient weatherApiClient;
+  final WeatherApiClient weatherApiClient; // DataProvider
+
   WeatherRepository({@required this.weatherApiClient})
       : assert(weatherApiClient != null);
 

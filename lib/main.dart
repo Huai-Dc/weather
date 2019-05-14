@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather/router/application.dart';
 import 'package:weather/router/routers.dart';
 import 'package:weather/bloc/blocs.dart';
@@ -25,6 +26,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+//    BlocProvider(
+//      bloc: ,
+//    );
     final app = MaterialApp(
       title: 'Weather',
       theme: ThemeData(
