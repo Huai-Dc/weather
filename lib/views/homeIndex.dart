@@ -56,7 +56,7 @@ class _HomeIndexState extends State<HomeIndex> {
       onWillPop: _requestPop,
       child: new Scaffold(
         backgroundColor: Colors.white,
-        body: new Weather(weatherRepository: weatherRepository, ),
+        body: new WeatherView(weatherRepository: weatherRepository, ),
       ),
     );
   }

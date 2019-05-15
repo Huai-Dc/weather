@@ -17,6 +17,7 @@ class Weather {
   final String advice; // 建议
   final String dressing_index; // 穿衣指数（冷、 热...）
   final String uv_index; // 紫外线指数
+  final Map<String, dynamic> futureWeather; // 未来天气
 
   Weather(
     this.temp,
@@ -34,6 +35,7 @@ class Weather {
     this.advice,
     this.dressing_index,
     this.uv_index,
+    this.futureWeather,
   );
 
   Weather.fromJson(Map<String, dynamic> json)
@@ -51,6 +53,7 @@ class Weather {
         advice = json["today"]["dressing_advice"],
         dressing_index = json["today"]["dressing_index"],
         uv_index = json["today"]["uv_index"],
+        futureWeather = json["future"],
         city = json["today"]["city"];
 
   Map<String, dynamic> toJson() => {
@@ -67,5 +70,8 @@ class Weather {
         "time": time,
         "city": city,
         "uv_index": uv_index,
+        "futureWeather": futureWeather,
       };
+
+//  void get
 }

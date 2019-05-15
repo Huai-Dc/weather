@@ -11,21 +11,23 @@ import 'package:weather/utils/screenUtil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather/bloc/blocs.dart';
 import 'package:weather/repositories/repositories.dart';
+import 'package:weather/models/weather.dart';
+import 'package:weather/utils/commonUIUtil.dart';
 
-class Weather extends StatefulWidget {
+class WeatherView extends StatefulWidget {
   final WeatherRepository weatherRepository;
 
-  Weather({
+  WeatherView({
     Key key,
     @required this.weatherRepository,
   })  : assert(weatherRepository != null),
         super(key: key);
 
   @override
-  _WeatherState createState() => _WeatherState();
+  _WeatherViewState createState() => _WeatherViewState();
 }
 
-class _WeatherState extends State<Weather> {
+class _WeatherViewState extends State<WeatherView> {
   WeatherBloc _weatherBloc;
   Completer<void> _refreshCompleter;
 
@@ -101,7 +103,11 @@ class _WeatherState extends State<Weather> {
                   return Container(
                     child: ListView(
                       children: <Widget>[
-
+                        WeatherInfo(weather, _weatherBloc),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        RecentWeatherBar(weather, _weatherBloc),
                       ],
                     ),
                   );
@@ -122,15 +128,18 @@ class _WeatherState extends State<Weather> {
   }
 }
 
+// 天气模块
 class WeatherInfo extends StatelessWidget {
   final Weather weather;
   final WeatherBloc _weatherBloc;
+
   WeatherInfo(this.weather, this._weatherBloc);
+
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return BlocBuilder(
       bloc: _weatherBloc,
-      builder: (_, WeatherState){
+      builder: (_, WeatherState state) {
         return Container(
           child: Container(
             child: Column(
@@ -158,32 +167,26 @@ class WeatherInfo extends StatelessWidget {
                           ),
                           Text(
                             weather.weather,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: CommonUI.normalTextWhite,
                           ),
                         ],
                       ),
                       Text(
                         weather.advice,
-                        style: TextStyle(
-                            fontSize: 16, color: Colors.white),
+                        style: CommonUI.normalTextWhite,
                       ),
                       new Row(
                         children: <Widget>[
                           Text(
-                            weather.wind_direction +
-                                weather.wind_strength,
-                            style: TextStyle(
-                                fontSize: 16, color: Colors.white),
+                            weather.wind_direction + weather.wind_strength,
+                            style: CommonUI.normalTextWhite,
                           ),
-                          Divider(),
+                          SizedBox(
+                            width: 5,
+                          ),
                           Text(
                             "湿度${weather.humidity}",
-                            style: TextStyle(
-                                fontSize: 16, color: Colors.white),
+                            style: CommonUI.normalTextWhite,
                           )
                         ],
                       ),
@@ -195,6 +198,95 @@ class WeatherInfo extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+// 今天及明天
+class RecentWeatherBar extends StatelessWidget {
+  final Weather weather;
+  final WeatherBloc _weatherBloc;
+
+  RecentWeatherBar(this.weather, this._weatherBloc);
+
+  @override
+  Widget build(BuildContext context) {
+    List future = [];
+    print("----------------------------");
+    // Map future = weather.futureWeather;
+    print(weather.futureWeather);
+    weather.futureWeather.forEach((key, value)=>{
+      // if(future.length == 2) break;
+      future.add(value)
+    });
+
+    print(future.toString());
+    
+    return BlocBuilder(
+      bloc: _weatherBloc,
+      builder: (_, WeatherState state) {
+        return Container(
+          color: Colors.black12,
+          child: Row(
+            children: <Widget>[
+              _buildPanel(),
+              _buildPanel(),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildPanel() {
+    return Container(
+      child: Container(
+        width: ScreenUtil().getWidth(375),
+        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  '今天',
+                  style: CommonUI.normalTextWhite,
+                ),
+                Text(
+                  "05/15",
+                  style: CommonUI.midTextWhite,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Image.asset(
+                  "assets/image/icons/light_rain@2x.png",
+                  width: ScreenUtil().getWidth(50),
+                ),
+                Text(
+                  "小雨转阴",
+                  style: CommonUI.normalTextWhite,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "26°/23°",
+                  style: CommonUI.normalTextWhite,
+                ),
+                Text(
+                  "优",
+                  style: CommonUI.normalTextWhite,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
