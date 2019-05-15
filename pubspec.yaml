@@ -35,6 +35,8 @@ dependencies:
   equatable: ^0.2.3
   # bloc
   flutter_bloc: ^0.13.0
+  # 0.15.8
+  intl: ^0.15.8
 
 dev_dependencies:
   flutter_test:

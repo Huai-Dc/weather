@@ -13,6 +13,7 @@ import 'package:weather/bloc/blocs.dart';
 import 'package:weather/repositories/repositories.dart';
 import 'package:weather/models/weather.dart';
 import 'package:weather/utils/commonUIUtil.dart';
+import 'package:intl/intl.dart';
 
 class WeatherView extends StatefulWidget {
   final WeatherRepository weatherRepository;
@@ -211,17 +212,17 @@ class RecentWeatherBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List future = [];
-    print("----------------------------");
-    // Map future = weather.futureWeather;
-    print(weather.futureWeather);
-    weather.futureWeather.forEach((key, value)=>{
-      // if(future.length == 2) break;
-      future.add(value)
-    });
+    DateTime today = DateTime.now();
+    DateTime tomorrow = today.add(Duration(days: 1));
+    var formatter = new DateFormat("yyyyMMdd");
+    var formatter2 = new DateFormat("MM/dd");
 
-    print(future.toString());
-    
+    Map today_info = weather.futureWeather["day_${formatter.format(today)}"];
+    today_info["date"] = formatter2.format(today);
+    today_info["week"] = "今天";
+    Map tomorrow_info = weather.futureWeather["day_${formatter.format(tomorrow)}"];
+    tomorrow_info["date"] = formatter2.format(tomorrow);
+
     return BlocBuilder(
       bloc: _weatherBloc,
       builder: (_, WeatherState state) {
@@ -229,8 +230,8 @@ class RecentWeatherBar extends StatelessWidget {
           color: Colors.black12,
           child: Row(
             children: <Widget>[
-              _buildPanel(),
-              _buildPanel(),
+              _buildPanel(today_info),
+              _buildPanel(tomorrow_info),
             ],
           ),
         );
@@ -238,22 +239,22 @@ class RecentWeatherBar extends StatelessWidget {
     );
   }
 
-  Widget _buildPanel() {
+  Widget _buildPanel(Map dayWeather) {
     return Container(
       child: Container(
         width: ScreenUtil().getWidth(375),
-        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
         child: Column(
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  '今天',
+                  dayWeather["week"],
                   style: CommonUI.normalTextWhite,
                 ),
                 Text(
-                  "05/15",
+                  dayWeather["date"],
                   style: CommonUI.midTextWhite,
                 ),
               ],
@@ -266,7 +267,7 @@ class RecentWeatherBar extends StatelessWidget {
                   width: ScreenUtil().getWidth(50),
                 ),
                 Text(
-                  "小雨转阴",
+                  dayWeather["weather"],
                   style: CommonUI.normalTextWhite,
                 ),
               ],
@@ -275,7 +276,7 @@ class RecentWeatherBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "26°/23°",
+                  dayWeather["temperature"],
                   style: CommonUI.normalTextWhite,
                 ),
                 Text(
@@ -290,3 +291,12 @@ class RecentWeatherBar extends StatelessWidget {
     );
   }
 }
+
+// 未来播报
+class FutureWeatherBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
