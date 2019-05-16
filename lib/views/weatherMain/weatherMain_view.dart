@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 /**
  * created by Huai 2019/5/8 0008
@@ -109,6 +108,10 @@ class _WeatherViewState extends State<WeatherView> {
                           height: 20,
                         ),
                         RecentWeatherBar(weather, _weatherBloc),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        FutureWeatherBar(weather, _weatherBloc),
                       ],
                     ),
                   );
@@ -215,13 +218,11 @@ class RecentWeatherBar extends StatelessWidget {
     DateTime today = DateTime.now();
     DateTime tomorrow = today.add(Duration(days: 1));
     var formatter = new DateFormat("yyyyMMdd");
-    var formatter2 = new DateFormat("MM/dd");
 
-    Map today_info = weather.futureWeather["day_${formatter.format(today)}"];
-    today_info["date"] = formatter2.format(today);
-    today_info["week"] = "今天";
-    Map tomorrow_info = weather.futureWeather["day_${formatter.format(tomorrow)}"];
-    tomorrow_info["date"] = formatter2.format(tomorrow);
+    Map todayInfo = weather.futureWeather["day_${formatter.format(today)}"];
+    todayInfo["week"] = "今天";
+    Map tomorrowInfo =
+        weather.futureWeather["day_${formatter.format(tomorrow)}"];
 
     return BlocBuilder(
       bloc: _weatherBloc,
@@ -230,8 +231,8 @@ class RecentWeatherBar extends StatelessWidget {
           color: Colors.black12,
           child: Row(
             children: <Widget>[
-              _buildPanel(today_info),
-              _buildPanel(tomorrow_info),
+              _buildPanel(todayInfo),
+              _buildPanel(tomorrowInfo),
             ],
           ),
         );
@@ -240,6 +241,7 @@ class RecentWeatherBar extends StatelessWidget {
   }
 
   Widget _buildPanel(Map dayWeather) {
+    var formatter = new DateFormat("MM/dd");
     return Container(
       child: Container(
         width: ScreenUtil().getWidth(375),
@@ -254,7 +256,7 @@ class RecentWeatherBar extends StatelessWidget {
                   style: CommonUI.normalTextWhite,
                 ),
                 Text(
-                  dayWeather["date"],
+                  formatter.format(DateTime.parse(dayWeather["date"])),
                   style: CommonUI.midTextWhite,
                 ),
               ],
@@ -263,7 +265,8 @@ class RecentWeatherBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Image.asset(
-                  "assets/image/icons/light_rain@2x.png",
+                  CommonUI()
+                      .getWeatherIconPathByCode(dayWeather["weather_id"]["fa"]),
                   width: ScreenUtil().getWidth(50),
                 ),
                 Text(
@@ -294,9 +297,96 @@ class RecentWeatherBar extends StatelessWidget {
 
 // 未来播报
 class FutureWeatherBar extends StatelessWidget {
+  final Weather weather;
+  final WeatherBloc _weatherBloc;
+
+  FutureWeatherBar(this.weather, this._weatherBloc);
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    List future = weather.futureWeather.values.toList();
+
+    print(future);
+    print(future.length);
+
+    return BlocBuilder(
+        bloc: _weatherBloc,
+        builder: (_, WeatherState state) {
+          return Container(
+            color: Colors.black12,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  child: Text(
+                    "一周预报",
+                    style: TextStyle(fontSize: 13, color: Colors.white),
+                  ),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        children: future.map((days) {
+                          return Container(
+                            width: ScreenUtil().getWidth(125),
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                border: new Border(
+                                    top: BorderSide(
+                                        color: Colors.white30, width: 0.2),
+                                    right: BorderSide(
+                                        color: Colors.white30, width: 0.2))),
+                            child: Text(
+                              days["week"],
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          );
+                        })?.toList(),
+                      ),
+                      Row(
+                        children: future.map((days) {
+                          var formatter = new DateFormat("MM/dd");
+                          return Container(
+                            width: ScreenUtil().getWidth(125),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                border: new Border(
+                                    right: BorderSide(
+                                        color: Colors.white30, width: 0.2))),
+                            child: Text(
+                              formatter.format(DateTime.parse(days["date"])),
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          );
+                        })?.toList(),
+                      ),
+                      Row(
+                        children: future.map((days) {
+                          return Container(
+                            width: ScreenUtil().getWidth(125),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                border: new Border(
+                                    right: BorderSide(
+                                        color: Colors.white30, width: 0.2))),
+                            child: Image.asset(
+                              CommonUI()
+                                  .getWeatherIconPathByCode(days["weather_id"]["fa"]),
+                              width: ScreenUtil().getWidth(50),
+                            ),
+                          );
+                        })?.toList(),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 }
-

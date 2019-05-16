@@ -35,8 +35,10 @@ dependencies:
   equatable: ^0.2.3
   # bloc
   flutter_bloc: ^0.13.0
-  # 0.15.8
+  # 国际化及事件日期格式化
   intl: ^0.15.8
+  # 图表
+  charts_flutter: ^0.6.0
 
 dev_dependencies:
   flutter_test:
