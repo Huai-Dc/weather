@@ -381,6 +381,36 @@ class FutureWeatherBar extends StatelessWidget {
                           );
                         })?.toList(),
                       ),
+                      Row(
+                        children: future.map((days) {
+                          return Container(
+                            width: ScreenUtil().getWidth(125),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                border: new Border(
+                                    right: BorderSide(
+                                        color: Colors.white30, width: 0.2))),
+                            child: Image.asset(
+                              CommonUI()
+                                  .getWeatherIconPathByCode(days["weather_id"]["fb"]),
+                              width: ScreenUtil().getWidth(50),
+                            ),
+                          );
+                        })?.toList(),
+                      ),
+                      Row(
+                        children: future.map((days) {
+                          return Container(
+                            width: ScreenUtil().getWidth(125),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                border: new Border(
+                                    right: BorderSide(
+                                        color: Colors.white30, width: 0.2))),
+                            child: Text("${days["wind"]}".split("风")[0]+"风", style: TextStyle(color: Colors.white),),
+                          );
+                        })?.toList(),
+                      ),
                     ],
                   ),
                 ),
