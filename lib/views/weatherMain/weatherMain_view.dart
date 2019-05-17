@@ -13,6 +13,7 @@ import 'package:weather/repositories/repositories.dart';
 import 'package:weather/models/weather.dart';
 import 'package:weather/utils/commonUIUtil.dart';
 import 'package:intl/intl.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class WeatherView extends StatefulWidget {
   final WeatherRepository weatherRepository;
@@ -74,6 +75,7 @@ class _WeatherViewState extends State<WeatherView> {
                 WeatherIcon.iosgengduo_o,
                 color: Colors.white,
               ),
+              onPressed: () => print("click"),
             ),
           ],
         ),
@@ -374,12 +376,58 @@ class FutureWeatherBar extends StatelessWidget {
                                     right: BorderSide(
                                         color: Colors.white30, width: 0.2))),
                             child: Image.asset(
-                              CommonUI()
-                                  .getWeatherIconPathByCode(days["weather_id"]["fa"]),
+                              CommonUI().getWeatherIconPathByCode(
+                                  days["weather_id"]["fa"]),
                               width: ScreenUtil().getWidth(50),
                             ),
                           );
                         })?.toList(),
+                      ),
+                      Stack(
+                        children: <Widget>[
+                          Container(
+                            height: 150,
+                            width: ScreenUtil().getWidth(875),
+                            child: new charts.LineChart(
+                              _createWeekTmps(),
+                              animate: true,
+                              flipVerticalAxis: false,
+                              defaultRenderer: new charts.LineRendererConfig(
+                                includePoints: true,
+                                radiusPx: 2.0,
+                                strokeWidthPx: 1.0,
+                                includeArea: false,
+                                stacked: false,
+                              ),
+                              domainAxis: new charts.AxisSpec<num>(
+                                showAxisLine: false,
+                                renderSpec: new charts.NoneRenderSpec(),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            left: 0.0,
+                            top: 0,
+                            child: Container(
+                              height: 150,
+                              width: ScreenUtil().getWidth(875),
+                              child: Row(
+                                children: List(7)
+                                    .map((_) => Container(
+                                        alignment: Alignment.center,
+                                        width: ScreenUtil().getWidth(125),
+                                        height: 150,
+                                        decoration: BoxDecoration(
+                                            border: new Border(
+                                          right: BorderSide(
+                                              color: Colors.white30,
+                                              width: 0.2),
+                                        ))))
+                                    .toList(),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       Row(
                         children: future.map((days) {
@@ -391,8 +439,8 @@ class FutureWeatherBar extends StatelessWidget {
                                     right: BorderSide(
                                         color: Colors.white30, width: 0.2))),
                             child: Image.asset(
-                              CommonUI()
-                                  .getWeatherIconPathByCode(days["weather_id"]["fb"]),
+                              CommonUI().getWeatherIconPathByCode(
+                                  days["weather_id"]["fb"]),
                               width: ScreenUtil().getWidth(50),
                             ),
                           );
@@ -407,7 +455,10 @@ class FutureWeatherBar extends StatelessWidget {
                                 border: new Border(
                                     right: BorderSide(
                                         color: Colors.white30, width: 0.2))),
-                            child: Text("${days["wind"]}".split("风")[0]+"风", style: TextStyle(color: Colors.white),),
+                            child: Text(
+                              "${days["wind"]}".split("风")[0] + "风",
+                              style: TextStyle(color: Colors.white),
+                            ),
                           );
                         })?.toList(),
                       ),
@@ -419,4 +470,51 @@ class FutureWeatherBar extends StatelessWidget {
           );
         });
   }
+
+  List<charts.Series<LinearSales, int>> _createWeekTmps() {
+    final data = [
+      new LinearSales(0, 25),
+      new LinearSales(1, 23),
+      new LinearSales(2, 27),
+      new LinearSales(3, 26),
+      new LinearSales(4, 18),
+      new LinearSales(5, 25),
+      new LinearSales(6, 20),
+    ];
+    final lowerTmps = [
+      new LinearSales(0, 20),
+      new LinearSales(1, 15),
+      new LinearSales(2, 20),
+      new LinearSales(3, 21),
+      new LinearSales(4, 15),
+      new LinearSales(5, 15),
+      new LinearSales(6, 14),
+    ];
+
+    return [
+      new charts.Series<LinearSales, int>(
+        id: 'tempMax',
+        displayName: '最高气温',
+        colorFn: (_, __) => charts.MaterialPalette.deepOrange.shadeDefault,
+        domainFn: (LinearSales sales, _) => sales.date,
+        measureFn: (LinearSales sales, _) => sales.sales,
+        data: data,
+      ),
+      new charts.Series<LinearSales, int>(
+        id: 'tempMin',
+        displayName: '最低气温',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (LinearSales sales, _) => sales.date,
+        measureFn: (LinearSales sales, _) => sales.sales,
+        data: lowerTmps,
+      )
+    ];
+  }
+}
+
+class LinearSales {
+  final int date;
+  final int sales;
+
+  LinearSales(this.date, this.sales);
 }
