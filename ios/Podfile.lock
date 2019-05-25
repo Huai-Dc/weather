@@ -1,0 +1,49 @@
+PODS:
+  - BSGridCollectionViewLayout (1.2.3)
+  - BSImagePicker (2.10.0):
+    - BSGridCollectionViewLayout (= 1.2.3)
+    - BSImageView (= 1.0.3)
+  - BSImageView (1.0.3)
+  - device_info (0.0.1):
+    - Flutter
+  - Flutter (1.0.0)
+  - multi_image_picker (4.3.2):
+    - BSImagePicker (~> 2.10.0)
+    - Flutter
+  - permission_handler (3.1.0):
+    - Flutter
+
+DEPENDENCIES:
+  - device_info (from `.symlinks/plugins/device_info/ios`)
+  - Flutter (from `.symlinks/flutter/ios`)
+  - multi_image_picker (from `.symlinks/plugins/multi_image_picker/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - BSGridCollectionViewLayout
+    - BSImagePicker
+    - BSImageView
+
+EXTERNAL SOURCES:
+  device_info:
+    :path: ".symlinks/plugins/device_info/ios"
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+  multi_image_picker:
+    :path: ".symlinks/plugins/multi_image_picker/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
+
+SPEC CHECKSUMS:
+  BSGridCollectionViewLayout: 568273e113fbc815f868f1898ef0465aee68f955
+  BSImagePicker: fa0c15b6740e8aa7a7b7f0fe38a71ad4cfa0ec4a
+  BSImageView: a149459433a2687157d034c78e059d30ac7f2544
+  device_info: 3ebad48f726348f69abd802f3334a8d1ed795fbd
+  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  multi_image_picker: fb52ce528844726e6ef79086ef4a1fb68707f47e
+  permission_handler: fa6b0d784b1a43cb96b468a5b8365cb130b1956a
+
+PODFILE CHECKSUM: 9dcdedf7424fae92334c92e50a66768019648738
+
+COCOAPODS: 1.6.1

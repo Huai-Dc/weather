@@ -26,7 +26,7 @@ dependencies:
   # 设备信息
   device_info: ^0.4.0+1
   # 设备权限
-  permission_handler: ^3.0.1
+  permission_handler: ^3.1.0
   # 路由
   fluro: ^1.4.0
   # 请求
@@ -39,6 +39,8 @@ dependencies:
   intl: ^0.15.8
   # 图表
   charts_flutter: ^0.6.0
+  # 多图选择
+  multi_image_picker: ^4.3.2
 
 dev_dependencies:
   flutter_test:
